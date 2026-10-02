@@ -8,6 +8,7 @@ This guide details how to compile, package, and install **mtkclient** from sourc
 
 - [Overview](#overview)
 - [RPM Package Highlights](#rpm-package-highlights)
+- [Automated Compilation & Testing (build.sh)](#automated-compilation--testing-buildsh)
 - [Prerequisites & Dependencies](#prerequisites--dependencies)
   - [Fedora / RHEL / CentOS / Fedora Asahi Remix](#fedora--rhel--centos--fedora-asahi-remix)
   - [Debian / Ubuntu](#debian--ubuntu)
@@ -55,6 +56,54 @@ The RPM package specification (`mtkclient.spec`) configures a complete system in
 - **Package Metadata:**
   - Python wheel built using Fedora's `%pyproject_wheel` macro with PEP 517/621 compliance (`hatchling` backend)
   - Dist-info metadata and documentation installed to `/usr/share/doc/mtkclient` and `/usr/share/licenses/mtkclient`
+
+---
+
+## Automated Compilation & Testing (build.sh)
+
+A turnkey build and test automation script `build.sh` is provided in the repository. It automatically handles source tarball creation, RPM compilation, and end-to-end sandbox verification tests.
+
+### Quick Start
+
+Simply run:
+
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+This single command will:
+1. Validate required build tools (`rpmbuild`, `python3`, `git`, `tar`, `rpm2cpio`, `cpio`, `desktop-file-validate`).
+2. Generate the source tarball `mtkclient-2.1.4.tar.gz` and place it in `~/rpmbuild/SOURCES/`.
+3. Compile both binary RPM (`.noarch.rpm`) and source RPM (`.src.rpm`).
+4. Copy the compiled RPMs to `dist/` for immediate access.
+5. Perform automated verification tests:
+   - Queries and validates RPM metadata (`rpm -qip`).
+   - Verifies the file manifest for all CLI binaries, desktop entries, and udev rules.
+   - Extracts the package to an isolated sandbox and checks python3 shebangs.
+   - Validates the desktop entry file (`desktop-file-validate`).
+   - Verifies MediaTek vendor IDs in udev rules.
+   - Verifies isolated module import from python site-packages.
+6. Display the path to the ready-to-install RPM and the installation command.
+
+### Available Options
+
+```text
+Usage: build.sh [OPTIONS]
+
+Options:
+  -r, --rpm          Build RPM package (default: true)
+  -w, --wheel        Build Python wheel package (default: false)
+  -t, --test         Run verification tests on built artifacts (default: true)
+  --no-test          Skip artifact verification tests
+  -c, --clean        Clean build directories and temporary files
+  -h, --help         Show this help message and exit
+
+Examples:
+  ./build.sh                  # Build RPM and run tests (standard)
+  ./build.sh --wheel          # Build RPM and Python wheel
+  ./build.sh --clean          # Clean local build directories
+```
 
 ---
 
