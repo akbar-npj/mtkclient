@@ -31,6 +31,8 @@ On some devices, preloader is deactivated, but you can reactivate it by running 
 
 ### Installation
 
+[See RPM compilation and packaging guide (Fedora/RHEL/CentOS)](BUILD.md)
+
 [See linux/macos installation hints](README-INSTALL.md)
 
 [See windows installation hints](README-WINDOWS.md)

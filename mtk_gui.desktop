@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MTK Client GUI
+Comment=MediaTek reverse engineering and flashing tool
+Exec=mtk_gui
+Icon=mtkclient
+Terminal=false
+Type=Application
+Categories=Development;Engineering;
+Keywords=mediatek;mtk;flash;unbrick;rom;
